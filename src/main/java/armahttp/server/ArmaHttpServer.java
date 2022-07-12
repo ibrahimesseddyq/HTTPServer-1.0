@@ -106,6 +106,7 @@ public class ArmaHttpServer implements Runnable {
             byte[] bytes = new byte[buffer.limit()];
             buffer.get(bytes);
             String Content = new String(bytes);
+
             System.out.print(Content);
             return;
         }
