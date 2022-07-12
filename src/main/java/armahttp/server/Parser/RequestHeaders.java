@@ -2,9 +2,14 @@ package armahttp.server.Parser;
 
 import java.util.HashMap;
 
-public class RequestHeaders {
+public class RequestHeaders extends Request{
     HashMap<String,String> headers;
-    public RequestHeaders(String strheaders){
+    String strheaders;
+    public RequestHeaders(){
+    super();
+    }
+    @Override
+    public void parse(String strheaders){
         headers = new HashMap<String, String>();
         String[] arr = strheaders.split("[\r\n]+");
         for (int i=0;i<arr.length;i++){
@@ -13,13 +18,16 @@ public class RequestHeaders {
             headers.put(headerKey,headerValue);
         }
     }
-    public String getHeader(String key){
+@Override
+    public String getValue(String key){
         return headers.get(key);
     }
     public static void main(String[] args){
-        RequestHeaders rh = new RequestHeaders("Agent=sdskdjs" +"\n"+
+        RequestHeaders rh = new RequestHeaders();
+        rh.init("Agent=sdskdjs" +"\n"+
                 "age=5");
-        System.out.println(rh.getHeader("Agent"));
+        System.out.println(rh.getValue("Agent"));
+
     }
 
 }
