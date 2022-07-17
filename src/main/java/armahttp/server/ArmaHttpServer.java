@@ -2,6 +2,9 @@ package armahttp.server;
 
 import armahttp.server.Config.Config;
 import armahttp.server.Parser.HttpParser;
+import armahttp.server.Util.Controller;
+import armahttp.server.Util.RequestHandler;
+import armahttp.server.Util.ResponseHandler;
 import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -102,13 +105,14 @@ public class ArmaHttpServer implements Runnable {
 
         while( channel.read(buffer)!=-1){
             buffer.flip();
-
+            System.out.println("Hi");
             byte[] bytes = new byte[buffer.limit()];
             buffer.get(bytes);
             String Content = new String(bytes);
-
-            System.out.print(Content);
+            Controller ct = new Controller(new RequestHandler(Content),new ResponseHandler(),Content);
+            System.out.println(ct.getRequest().getRpHandler().toString());
             return;
+
         }
 //        HttpParser httpParser = httpmap.get(channel);
 //        if(httpParser == null){

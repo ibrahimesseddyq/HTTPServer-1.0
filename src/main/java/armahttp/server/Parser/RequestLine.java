@@ -1,6 +1,7 @@
 package armahttp.server.Parser;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public class RequestLine extends Request{
@@ -9,6 +10,14 @@ public class RequestLine extends Request{
     public RequestLine(){
         super();
     }
+    protected void init(String str){
+        this.str = str;
+        this.parse(this.str);
+    }
+    /*
+     * function that parse the lines and load them into hashmap
+     * @params strheaders String of headers
+     */
     @Override
     public void parse(String stline){
         lines = new HashMap<>();
@@ -24,6 +33,10 @@ public class RequestLine extends Request{
         }else {
             throw new RuntimeException("This Server support Just HTTP and Theoritcly HTTPS");
         }
+        System.out.println(this.lines.get("method"));
+        System.out.println(this.lines.get("requestedURI"));
+        System.out.println(this.lines.get("httpVersion"));
+        System.out.println("Reuestline parse");
     }
     @Override
     public String getValue(String key){
@@ -34,14 +47,21 @@ public class RequestLine extends Request{
     public static void main(String[] args){
         // Test
         RequestLine rl = new RequestLine();
-        rl.init("GET /api HTTPS/1.1");
-        System.out.println(rl.getValue("method"));
-        System.out.println(rl.getValue("requestedURI"));
-        System.out.println(rl.getValue("httpVersion"));
-        System.out.println(rl.getValue("isHttps"));
-
-
+        rl.init("GET /api HTTP/1.1");
+        System.out.println(rl.toString());
 
     }
 
+    @Override
+
+        public String toString() {
+
+            String text = "";
+            for (Map.Entry<String, String> entry : lines.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                text += key + " : " + value + "\n";
+            }
+            return text;
+        }
 }
